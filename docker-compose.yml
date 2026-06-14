@@ -1,0 +1,28 @@
+services:
+  cineverse-server:
+    container_name: cineverse-server
+    build:
+      context: .
+      args:
+        - SERVER_PORT=${SERVER_PORT}
+    ports:
+      - "${SERVER_PORT}:${SERVER_PORT}"
+    depends_on:
+      - cineverse-database
+    environment:
+      - DB_HOST=${DB_HOST}
+      - DB_PORT=${DB_PORT}
+      - DB_NAME=${DB_NAME}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - SERVER_PORT=${SERVER_PORT}
+
+  cineverse-database:
+    container_name: cineverse-database
+    image: postgres:14
+    ports:
+     - "${DB_PORT}:5432"
+    environment:
+      - POSTGRES_USER=${DB_USERNAME}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
