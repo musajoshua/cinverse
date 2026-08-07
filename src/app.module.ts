@@ -1,10 +1,12 @@
-import { Module } from '@nestjs/common';
+import { ClassSerializerInterceptor, Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import Joi from 'joi';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
+import { UsersModule } from './users/users.module';
+import { APP_INTERCEPTOR } from '@nestjs/core';
 
 @Module({
   imports: [
@@ -27,8 +29,15 @@ import { AuthModule } from './auth/auth.module';
       autoLoadEntities: true,
     }),
     AuthModule,
+    UsersModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: ClassSerializerInterceptor,
+    },
+  ],
 })
 export class AppModule {}
