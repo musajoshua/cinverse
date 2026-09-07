@@ -9,7 +9,7 @@ export class Actor {
   name: string;
 
   @Column('date')
-  dateOfBirth: Date;
+  dateOfBirth: string;
 
   @Column('text', { array: true })
   filmography: string[];

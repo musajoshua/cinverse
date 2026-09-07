@@ -5,7 +5,7 @@ export class CreateActorDto {
   name: string;
 
   @IsDateString()
-  dateOfBirth: Date;
+  dateOfBirth: string;
 
   @IsArray({ each: true })
   filmography: string[];
