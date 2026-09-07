@@ -3,9 +3,13 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  JoinTable,
+  ManyToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Genre } from '../../genres/entities/genre.entity';
+import { Actor } from '../../actors/entities/actor.entity';
 
 @Entity('movies')
 export class Movie {
@@ -21,11 +25,13 @@ export class Movie {
   @Column('date')
   releaseDate: string;
 
-  @Column('text', { array: true })
-  genres: string[];
+  @ManyToMany(() => Genre)
+  @JoinTable({ name: 'movies_genres' })
+  genres: Genre[];
 
-  @Column('text', { array: true })
-  actors: string[];
+  @ManyToMany(() => Actor, (actor) => actor.filmography)
+  @JoinTable({ name: 'movies_actors' })
+  actors: Actor[];
 
   @Column()
   posterImage: string;
