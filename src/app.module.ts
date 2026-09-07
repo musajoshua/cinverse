@@ -7,6 +7,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { APP_INTERCEPTOR } from '@nestjs/core';
+import { MoviesModule } from './movies/movies.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
     }),
     AuthModule,
     UsersModule,
+    MoviesModule,
   ],
   controllers: [AppController],
   providers: [
