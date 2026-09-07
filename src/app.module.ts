@@ -9,6 +9,7 @@ import { UsersModule } from './users/users.module';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { MoviesModule } from './movies/movies.module';
 import { GenresModule } from './genres/genres.module';
+import { ActorsModule } from './actors/actors.module';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { GenresModule } from './genres/genres.module';
     UsersModule,
     MoviesModule,
     GenresModule,
+    ActorsModule,
   ],
   controllers: [AppController],
   providers: [
