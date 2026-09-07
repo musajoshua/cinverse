@@ -2,10 +2,12 @@ import {
   Column,
   CreateDateColumn,
   DeleteDateColumn,
+  Entity,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 
+@Entity()
 export class Movie {
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -19,10 +21,10 @@ export class Movie {
   @Column('date')
   releaseDate: Date;
 
-  @Column()
+  @Column('text', { array: true })
   genres: string[];
 
-  @Column()
+  @Column('text', { array: true })
   actors: string[];
 
   @Column()
