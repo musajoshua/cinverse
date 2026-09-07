@@ -19,7 +19,7 @@ export class Movie {
   description: string;
 
   @Column('date')
-  releaseDate: Date;
+  releaseDate: string;
 
   @Column('text', { array: true })
   genres: string[];

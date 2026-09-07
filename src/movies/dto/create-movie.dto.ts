@@ -8,7 +8,7 @@ export class CreateMovieDto {
   description: string;
 
   @IsDateString()
-  releaseDate: Date;
+  releaseDate: string;
 
   @IsArray({ each: true })
   genres: string[];
