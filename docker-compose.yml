@@ -10,7 +10,7 @@ services:
     depends_on:
       - cineverse-database
     environment:
-      - DB_HOST=${DB_HOST}
+      - DB_HOST=cineverse-database
       - DB_PORT=${DB_PORT}
       - DB_NAME=${DB_NAME}
       - DB_USERNAME=${DB_USERNAME}
