@@ -1,5 +1,5 @@
 import { Injectable, BadRequestException } from '@nestjs/common';
-import { Users } from '../users/entities/user.entity';
+import { User } from '../users/entities/user.entity';
 import { LoginDTO } from './dto/login.dto';
 import { RegisterDTO } from './dto/register.dto';
 import { compare, genSalt, hash } from 'bcrypt';
@@ -74,7 +74,7 @@ export class AuthService {
     return compare(password, hash);
   }
 
-  private generateJWTToken(user: Users) {
+  private generateJWTToken(user: User) {
     const payload = { id: user.id, email: user.email };
     return this.jwtService.signAsync(payload);
   }
