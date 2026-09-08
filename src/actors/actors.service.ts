@@ -3,7 +3,7 @@ import { CreateActorDto } from './dto/create-actor.dto';
 import { UpdateActorDto } from './dto/update-actor.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Actor } from './entities/actor.entity';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 
 @Injectable()
 export class ActorsService {
@@ -12,8 +12,9 @@ export class ActorsService {
     private readonly actorRepository: Repository<Actor>,
   ) {}
 
-  create(createActorDto: CreateActorDto) {
+  async create(createActorDto: CreateActorDto) {
     const createdActor = this.actorRepository.create(createActorDto);
+
     return this.actorRepository.save(createdActor);
   }
 
@@ -60,5 +61,9 @@ export class ActorsService {
     }
 
     return this.actorRepository.remove(actor);
+  }
+
+  findByIds(ids: string[]) {
+    return this.actorRepository.findBy({ id: In(ids) });
   }
 }

@@ -1,4 +1,4 @@
-import { IsArray, IsDateString, IsString } from 'class-validator';
+import { IsDateString, IsString } from 'class-validator';
 
 export class CreateActorDto {
   @IsString()
@@ -6,7 +6,4 @@ export class CreateActorDto {
 
   @IsDateString()
   dateOfBirth: string;
-
-  @IsArray({ each: true })
-  filmography: string[];
 }

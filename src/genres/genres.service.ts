@@ -3,7 +3,7 @@ import { CreateGenreDto } from './dto/create-genre.dto';
 import { UpdateGenreDto } from './dto/update-genre.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Genre } from './entities/genre.entity';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 
 @Injectable()
 export class GenresService {
@@ -60,5 +60,9 @@ export class GenresService {
     }
 
     return this.genreRepository.remove(genre);
+  }
+
+  findByIds(ids: string[]) {
+    return this.genreRepository.findBy({ id: In(ids) });
   }
 }
