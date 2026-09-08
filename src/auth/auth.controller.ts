@@ -2,7 +2,7 @@ import { Body, Controller, Post } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginDTO } from './dto/login.dto';
 import { RegisterDTO } from './dto/register.dto';
-import { ConfirmPasswordPipePipe } from '../confirm-password-pipe/confirm-password-pipe.pipe';
+import { ConfirmPasswordPipe } from '../common/pipes/confirm-password/confirm-password.pipe';
 
 @Controller('auth')
 export class AuthController {
@@ -14,7 +14,7 @@ export class AuthController {
   }
 
   @Post('/signup')
-  signUp(@Body(ConfirmPasswordPipePipe) registerDTO: RegisterDTO) {
+  signUp(@Body(ConfirmPasswordPipe) registerDTO: RegisterDTO) {
     return this.authService.register(registerDTO);
   }
 }

@@ -7,7 +7,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { UserRole } from '../enums/role.enum';
+import { UserRole } from '../../common/enums/role.enum';
 
 @Entity('users')
 export class User {

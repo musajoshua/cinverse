@@ -4,10 +4,10 @@ import {
   Injectable,
   PipeTransform,
 } from '@nestjs/common';
-import { RegisterDTO } from '../auth/dto/register.dto';
+import { RegisterDTO } from '../../../auth/dto/register.dto';
 
 @Injectable()
-export class ConfirmPasswordPipePipe implements PipeTransform {
+export class ConfirmPasswordPipe implements PipeTransform {
   transform(value: RegisterDTO, metadata: ArgumentMetadata) {
     if (value.password != value.confirmPassword) {
       throw new BadRequestException(
