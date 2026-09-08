@@ -10,6 +10,7 @@ import { Movie } from './entities/movie.entity';
 import { In, Repository } from 'typeorm';
 import { ActorsService } from '../actors/actors.service';
 import { GenresService } from '../genres/genres.service';
+import { PaginationDto } from '../common/pagination/pagination.dto';
 
 @Injectable()
 export class MoviesService {
@@ -33,8 +34,11 @@ export class MoviesService {
     return this.movieRepository.save(createdMovie);
   }
 
-  findAll() {
-    return this.movieRepository.find();
+  findAll(pagination: PaginationDto) {
+    return this.movieRepository.find({
+      skip: pagination.offset,
+      take: pagination.limit,
+    });
   }
 
   async findOne(id: string) {
