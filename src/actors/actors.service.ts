@@ -4,6 +4,7 @@ import { UpdateActorDto } from './dto/update-actor.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Actor } from './entities/actor.entity';
 import { In, Repository } from 'typeorm';
+import { PaginationDto } from '../common/pagination/pagination.dto';
 
 @Injectable()
 export class ActorsService {
@@ -18,8 +19,11 @@ export class ActorsService {
     return this.actorRepository.save(createdActor);
   }
 
-  findAll() {
-    return this.actorRepository.find();
+  findAll(pagination: PaginationDto) {
+    return this.actorRepository.find({
+      skip: pagination.offset,
+      take: pagination.limit,
+    });
   }
 
   async findOne(id: string) {
