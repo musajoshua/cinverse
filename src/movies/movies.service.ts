@@ -7,10 +7,10 @@ import { CreateMovieDto } from './dto/create-movie.dto';
 import { UpdateMovieDto } from './dto/update-movie.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Movie } from './entities/movie.entity';
-import { In, Repository } from 'typeorm';
+import { ILike, In, Repository } from 'typeorm';
 import { ActorsService } from '../actors/actors.service';
 import { GenresService } from '../genres/genres.service';
-import { PaginationDto } from '../common/pagination/pagination.dto';
+import { FilterMovieDto } from './dto/filter-movie.dto';
 
 @Injectable()
 export class MoviesService {
@@ -34,10 +34,21 @@ export class MoviesService {
     return this.movieRepository.save(createdMovie);
   }
 
-  findAll(pagination: PaginationDto) {
+  findAll(filters: FilterMovieDto) {
+    const { title, genre, actor, offset = 0, limit = 20 } = filters;
+
     return this.movieRepository.find({
-      skip: pagination.offset,
-      take: pagination.limit,
+      where: {
+        title: title ? ILike(`%${title}%`) : undefined,
+        genres: genre ? { name: ILike(`%${genre}%`) } : undefined,
+        actors: actor ? { name: ILike(`%${actor}%`) } : undefined,
+      },
+      relations: {
+        genres: true,
+        actors: true,
+      },
+      skip: offset,
+      take: limit,
     });
   }
 

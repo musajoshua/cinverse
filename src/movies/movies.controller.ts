@@ -11,7 +11,7 @@ import {
 import { MoviesService } from './movies.service';
 import { CreateMovieDto } from './dto/create-movie.dto';
 import { UpdateMovieDto } from './dto/update-movie.dto';
-import { PaginationDto } from '../common/pagination/pagination.dto';
+import { FilterMovieDto } from './dto/filter-movie.dto';
 
 @Controller('movies')
 export class MoviesController {
@@ -23,8 +23,8 @@ export class MoviesController {
   }
 
   @Get()
-  findAll(@Query() pagination: PaginationDto) {
-    return this.moviesService.findAll(pagination);
+  findAll(@Query() filters: FilterMovieDto) {
+    return this.moviesService.findAll(filters);
   }
 
   @Get(':id')
