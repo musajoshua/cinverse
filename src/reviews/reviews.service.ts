@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateReviewDto } from './dto/create-review.dto';
 import { UpdateReviewDto } from './dto/update-review.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -19,6 +23,19 @@ export class ReviewsService {
   async create(createReviewDto: CreateReviewDto) {
     const user = await this.userService.findOne(createReviewDto.user);
     const movie = await this.movieService.findOne(createReviewDto.movie);
+
+    const review = await this.reviewRepository.findOne({
+      where: {
+        movie,
+        user,
+      },
+    });
+
+    if (review) {
+      throw new ConflictException(
+        `User ${user.id} has already reviewed movie ${movie.id}`,
+      );
+    }
 
     const createReview = this.reviewRepository.create({
       ...createReviewDto,
