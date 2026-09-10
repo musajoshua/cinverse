@@ -7,9 +7,10 @@ import { CreateReviewDto } from './dto/create-review.dto';
 import { UpdateReviewDto } from './dto/update-review.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Review } from './entities/review.entity';
-import { Repository } from 'typeorm';
+import { FindOptionsWhere, Repository } from 'typeorm';
 import { UsersService } from '../users/users.service';
 import { MoviesService } from '../movies/movies.service';
+import { FilterReviewDto } from './dto/filter-review.dto';
 
 @Injectable()
 export class ReviewsService {
@@ -46,12 +47,23 @@ export class ReviewsService {
     return this.reviewRepository.save(createReview);
   }
 
-  findAll() {
+  findAll(filters: FilterReviewDto) {
+    const { movieId, offset = 0, limit = 20 } = filters;
+
+    const where: FindOptionsWhere<Review> = {};
+
+    if (movieId) {
+      where.movie = { id: movieId };
+    }
+
     return this.reviewRepository.find({
+      where,
       relations: {
         user: true,
         movie: true,
       },
+      skip: offset,
+      take: limit,
     });
   }
 
