@@ -10,6 +10,7 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
 import { MoviesModule } from './movies/movies.module';
 import { GenresModule } from './genres/genres.module';
 import { ActorsModule } from './actors/actors.module';
+import { ReviewsModule } from './reviews/reviews.module';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { ActorsModule } from './actors/actors.module';
     MoviesModule,
     GenresModule,
     ActorsModule,
+    ReviewsModule,
   ],
   controllers: [AppController],
   providers: [

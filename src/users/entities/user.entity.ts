@@ -4,10 +4,12 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { UserRole } from '../../common/enums/role.enum';
+import { Review } from '../../reviews/entities/review.entity';
 
 @Entity('users')
 export class User {
@@ -23,6 +25,9 @@ export class User {
 
   @Column({ type: 'enum', enum: UserRole, default: UserRole.USER })
   role: UserRole;
+
+  @OneToMany(() => Review, (review) => review.user)
+  reviews: Review[];
 
   @CreateDateColumn()
   createdAt: Date;

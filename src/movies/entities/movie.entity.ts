@@ -5,11 +5,13 @@ import {
   Entity,
   JoinTable,
   ManyToMany,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { Genre } from '../../genres/entities/genre.entity';
 import { Actor } from '../../actors/entities/actor.entity';
+import { Review } from '../../reviews/entities/review.entity';
 
 @Entity('movies')
 export class Movie {
@@ -32,6 +34,9 @@ export class Movie {
   @ManyToMany(() => Actor, (actor) => actor.filmography)
   @JoinTable({ name: 'movies_actors' })
   actors: Actor[];
+
+  @OneToMany(() => Review, (review) => review.movie)
+  reviews: Review[];
 
   @Column()
   posterImage: string;
