@@ -112,6 +112,12 @@ export class MoviesService {
     return this.movieRepository.findBy({ id: In(ids) });
   }
 
+  setAverageRating(movieId: string, averageRating: number) {
+    return this.movieRepository.update(movieId, {
+      averageRating,
+    });
+  }
+
   private async preloadGenres(ids: string[] | undefined) {
     if (!ids) return undefined;
 

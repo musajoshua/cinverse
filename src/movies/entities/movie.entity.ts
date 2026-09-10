@@ -27,6 +27,9 @@ export class Movie {
   @Column('date')
   releaseDate: string;
 
+  @Column({ type: 'float', default: 0 })
+  averageRating: number;
+
   @ManyToMany(() => Genre)
   @JoinTable({ name: 'movies_genres' })
   genres: Genre[];

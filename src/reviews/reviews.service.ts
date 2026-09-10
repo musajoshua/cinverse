@@ -44,7 +44,11 @@ export class ReviewsService {
       movie,
     });
 
-    return this.reviewRepository.save(createReview);
+    const saved = await this.reviewRepository.save(createReview);
+
+    await this.syncMovieAverage(movie.id);
+
+    return saved;
   }
 
   findAll(filters: FilterReviewDto) {
@@ -104,7 +108,18 @@ export class ReviewsService {
       throw new NotFoundException(`Review with ${id} is not found`);
     }
 
-    return this.reviewRepository.save(review);
+    const saved = await this.reviewRepository.save(review);
+
+    const movieId =
+      movie?.id ??
+      (await this.reviewRepository.findOne({
+        where: { id },
+        relations: { movie: true },
+      }))!.movie.id;
+
+    await this.syncMovieAverage(movieId);
+
+    return saved;
   }
 
   async remove(id: string) {
@@ -112,12 +127,26 @@ export class ReviewsService {
       where: {
         id,
       },
+      relations: {
+        movie: true,
+      },
     });
 
     if (!review) {
       throw new NotFoundException(`Review with ${id} is not found`);
     }
 
-    return this.reviewRepository.remove(review);
+    const removed = await this.reviewRepository.remove(review);
+
+    await this.syncMovieAverage(review.movie.id);
+
+    return removed;
+  }
+
+  private async syncMovieAverage(movieId: string) {
+    const avg = await this.reviewRepository.average('rating', {
+      movie: { id: movieId },
+    });
+    await this.movieService.setAverageRating(movieId, avg ?? 0);
   }
 }
