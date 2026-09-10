@@ -21,6 +21,9 @@ export class ActorsService {
 
   findAll(pagination: PaginationDto) {
     return this.actorRepository.find({
+      relations: {
+        filmography: true,
+      },
       skip: pagination.offset,
       take: pagination.limit,
     });
@@ -30,6 +33,9 @@ export class ActorsService {
     const actor = await this.actorRepository.findOne({
       where: {
         id,
+      },
+      relations: {
+        filmography: true,
       },
     });
 
