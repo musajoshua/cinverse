@@ -7,7 +7,7 @@ import { CreateMovieDto } from './dto/create-movie.dto';
 import { UpdateMovieDto } from './dto/update-movie.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Movie } from './entities/movie.entity';
-import { ILike, In, Repository } from 'typeorm';
+import { FindOptionsWhere, ILike, In, Repository } from 'typeorm';
 import { ActorsService } from '../actors/actors.service';
 import { GenresService } from '../genres/genres.service';
 import { FilterMovieDto } from './dto/filter-movie.dto';
@@ -37,12 +37,22 @@ export class MoviesService {
   findAll(filters: FilterMovieDto) {
     const { title, genre, actor, offset = 0, limit = 20 } = filters;
 
+    const where: FindOptionsWhere<Movie> = {};
+
+    if (title) {
+      where.title = ILike(`%${title}%`);
+    }
+
+    if (genre) {
+      where.genres = { name: ILike(`%${genre}%`) };
+    }
+
+    if (actor) {
+      where.actors = { name: ILike(`%${actor}%`) };
+    }
+
     return this.movieRepository.find({
-      where: {
-        title: title ? ILike(`%${title}%`) : undefined,
-        genres: genre ? { name: ILike(`%${genre}%`) } : undefined,
-        actors: actor ? { name: ILike(`%${actor}%`) } : undefined,
-      },
+      where,
       relations: {
         genres: true,
         actors: true,
