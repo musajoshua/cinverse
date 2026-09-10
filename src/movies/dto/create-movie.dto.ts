@@ -1,4 +1,4 @@
-import { IsArray, IsDateString, IsString } from 'class-validator';
+import { IsArray, IsDateString, IsString, IsUUID } from 'class-validator';
 
 export class CreateMovieDto {
   @IsString()
@@ -10,10 +10,12 @@ export class CreateMovieDto {
   @IsDateString()
   releaseDate: string;
 
-  @IsArray({ each: true })
+  @IsArray()
+  @IsUUID('all', { each: true })
   genres: string[];
 
-  @IsArray({ each: true })
+  @IsArray()
+  @IsUUID('all', { each: true })
   actors: string[];
 
   @IsString()
