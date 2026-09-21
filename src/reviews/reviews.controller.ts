@@ -14,14 +14,18 @@ import { CreateReviewDto } from './dto/create-review.dto';
 import { UpdateReviewDto } from './dto/update-review.dto';
 import { FilterReviewDto } from './dto/filter-review.dto';
 import { ReviewOwnershipGuard } from './guards/review-ownership/review-ownership.guard';
+import { CurrentUser } from '../common/decorators/current-user/current-user.decorator';
 
 @Controller('reviews')
 export class ReviewsController {
   constructor(private readonly reviewsService: ReviewsService) {}
 
   @Post()
-  create(@Body() createReviewDto: CreateReviewDto) {
-    return this.reviewsService.create(createReviewDto);
+  create(
+    @Body() createReviewDto: CreateReviewDto,
+    @CurrentUser('id') userId: string,
+  ) {
+    return this.reviewsService.create(createReviewDto, userId);
   }
 
   @Get()

@@ -8,7 +8,6 @@ import { UpdateReviewDto } from './dto/update-review.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Review } from './entities/review.entity';
 import { FindOptionsWhere, Repository } from 'typeorm';
-import { UsersService } from '../users/users.service';
 import { MoviesService } from '../movies/movies.service';
 import { FilterReviewDto } from './dto/filter-review.dto';
 
@@ -17,30 +16,32 @@ export class ReviewsService {
   constructor(
     @InjectRepository(Review)
     private readonly reviewRepository: Repository<Review>,
-    private readonly userService: UsersService,
     private readonly movieService: MoviesService,
   ) {}
 
-  async create(createReviewDto: CreateReviewDto) {
-    const user = await this.userService.findOne(createReviewDto.user);
+  async create(createReviewDto: CreateReviewDto, userId: string) {
     const movie = await this.movieService.findOne(createReviewDto.movie);
 
     const review = await this.reviewRepository.findOne({
       where: {
         movie,
-        user,
+        user: {
+          id: userId,
+        },
       },
     });
 
     if (review) {
       throw new ConflictException(
-        `User ${user.id} has already reviewed movie ${movie.id}`,
+        `User ${userId} has already reviewed movie ${movie.id}`,
       );
     }
 
     const createReview = this.reviewRepository.create({
       ...createReviewDto,
-      user,
+      user: {
+        id: userId,
+      },
       movie,
     });
 
@@ -90,9 +91,6 @@ export class ReviewsService {
   }
 
   async update(id: string, updateReviewDto: UpdateReviewDto) {
-    const user = updateReviewDto.user
-      ? await this.userService.findOne(updateReviewDto.user)
-      : undefined;
     const movie = updateReviewDto.movie
       ? await this.movieService.findOne(updateReviewDto.movie)
       : undefined;
@@ -100,7 +98,6 @@ export class ReviewsService {
     const review = await this.reviewRepository.preload({
       id,
       ...updateReviewDto,
-      user,
       movie,
     });
 

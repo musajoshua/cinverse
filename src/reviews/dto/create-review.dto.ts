@@ -13,7 +13,4 @@ export class CreateReviewDto {
 
   @IsUUID('all')
   movie: string;
-
-  @IsUUID('all')
-  user: string;
 }
