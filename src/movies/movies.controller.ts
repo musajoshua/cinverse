@@ -14,6 +14,7 @@ import { UpdateMovieDto } from './dto/update-movie.dto';
 import { FilterMovieDto } from './dto/filter-movie.dto';
 import { USER_ROLES } from '../common/decorators/roles.decorator';
 import { UserRole } from '../common/enums/role.enum';
+import { PaginationValidationPipe } from '../common/pipes/pagination-validation/pagination-validation.pipe';
 
 @Controller('movies')
 export class MoviesController {
@@ -26,7 +27,7 @@ export class MoviesController {
   }
 
   @Get()
-  findAll(@Query() filters: FilterMovieDto) {
+  findAll(@Query(PaginationValidationPipe) filters: FilterMovieDto) {
     return this.moviesService.findAll(filters);
   }
 

@@ -15,6 +15,7 @@ import { UpdateReviewDto } from './dto/update-review.dto';
 import { FilterReviewDto } from './dto/filter-review.dto';
 import { ReviewOwnershipGuard } from './guards/review-ownership/review-ownership.guard';
 import { CurrentUser } from '../common/decorators/current-user/current-user.decorator';
+import { PaginationValidationPipe } from '../common/pipes/pagination-validation/pagination-validation.pipe';
 
 @Controller('reviews')
 export class ReviewsController {
@@ -29,7 +30,7 @@ export class ReviewsController {
   }
 
   @Get()
-  findAll(@Query() filters: FilterReviewDto) {
+  findAll(@Query(PaginationValidationPipe) filters: FilterReviewDto) {
     return this.reviewsService.findAll(filters);
   }
 
