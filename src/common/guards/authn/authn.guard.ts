@@ -9,7 +9,7 @@ import { IS_PUBLIC_KEY } from '../../decorators/public.decorator';
 import { JwtService } from '@nestjs/jwt';
 import { jwtConstants } from '../../../auth/constants';
 import { JWTPayload } from '../../interface/JwtPayload.interface';
-import { AuthenticatedRequest } from '../../interface/AuthenticatedRequest.interface';
+import { Request } from 'express';
 
 @Injectable()
 export class AuthNGuard implements CanActivate {
@@ -28,7 +28,7 @@ export class AuthNGuard implements CanActivate {
       return true;
     }
 
-    const request = context.switchToHttp().getRequest<AuthenticatedRequest>();
+    const request = context.switchToHttp().getRequest<Request>();
 
     const token = this.extractTokenFromHeader(request);
 
@@ -48,7 +48,7 @@ export class AuthNGuard implements CanActivate {
     return true;
   }
 
-  private extractTokenFromHeader(request: AuthenticatedRequest) {
+  private extractTokenFromHeader(request: Request) {
     const [type, token] = request.header('Authorization')?.split(' ') ?? [];
 
     return type === 'Bearer' ? token : undefined;

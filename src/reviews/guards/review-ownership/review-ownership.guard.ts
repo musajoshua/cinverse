@@ -6,15 +6,15 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { ReviewsService } from '../../reviews.service';
-import { AuthenticatedRequest } from '../../../common/interface/AuthenticatedRequest.interface';
 import { UserRole } from '../../../common/enums/role.enum';
+import { Request } from 'express';
 
 @Injectable()
 export class ReviewOwnershipGuard implements CanActivate {
   constructor(private readonly reviewService: ReviewsService) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    const request = context.switchToHttp().getRequest<AuthenticatedRequest>();
+    const request = context.switchToHttp().getRequest<Request>();
     const user = request.user;
     const reviewId = request.params.id as string;
 

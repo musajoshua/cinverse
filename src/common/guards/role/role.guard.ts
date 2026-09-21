@@ -10,7 +10,6 @@ import { Observable } from 'rxjs';
 import { USER_ROLES_KEY } from '../../decorators/roles.decorator';
 import { UserRole } from '../../enums/role.enum';
 import { Request } from 'express';
-import { AuthenticatedRequest } from '../../interface/AuthenticatedRequest.interface';
 
 @Injectable()
 export class RoleGuard implements CanActivate {
@@ -28,7 +27,7 @@ export class RoleGuard implements CanActivate {
       return true;
     }
 
-    const request = context.switchToHttp().getRequest<AuthenticatedRequest>();
+    const request = context.switchToHttp().getRequest<Request>();
 
     const user = request.user;
 
