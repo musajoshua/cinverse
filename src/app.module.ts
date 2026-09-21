@@ -1,4 +1,9 @@
-import { ClassSerializerInterceptor, Module } from '@nestjs/common';
+import {
+  ClassSerializerInterceptor,
+  MiddlewareConsumer,
+  Module,
+  NestModule,
+} from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
@@ -13,6 +18,7 @@ import { ActorsModule } from './actors/actors.module';
 import { ReviewsModule } from './reviews/reviews.module';
 import { AuthNGuard } from './common/guards/authn/authn.guard';
 import { RoleGuard } from './common/guards/role/role.guard';
+import { RequestLoggerMiddleware } from './common/middlewares/request-logger/request-logger.middleware';
 
 @Module({
   imports: [
@@ -58,4 +64,8 @@ import { RoleGuard } from './common/guards/role/role.guard';
     },
   ],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(RequestLoggerMiddleware).forRoutes('*');
+  }
+}
