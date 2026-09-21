@@ -7,11 +7,13 @@ import {
   Param,
   Delete,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { ReviewsService } from './reviews.service';
 import { CreateReviewDto } from './dto/create-review.dto';
 import { UpdateReviewDto } from './dto/update-review.dto';
 import { FilterReviewDto } from './dto/filter-review.dto';
+import { ReviewOwnershipGuard } from './guards/review-ownership/review-ownership.guard';
 
 @Controller('reviews')
 export class ReviewsController {
@@ -33,11 +35,13 @@ export class ReviewsController {
   }
 
   @Patch(':id')
+  @UseGuards(ReviewOwnershipGuard)
   update(@Param('id') id: string, @Body() updateReviewDto: UpdateReviewDto) {
     return this.reviewsService.update(id, updateReviewDto);
   }
 
   @Delete(':id')
+  @UseGuards(ReviewOwnershipGuard)
   remove(@Param('id') id: string) {
     return this.reviewsService.remove(id);
   }
