@@ -5,6 +5,7 @@ import { RegisterDTO } from './dto/register.dto';
 import { compare, genSalt, hash } from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../users/users.service';
+import { JWTPayload } from '../common/interface/JwtPayload.interface';
 
 @Injectable()
 export class AuthService {
@@ -75,7 +76,11 @@ export class AuthService {
   }
 
   private generateJWTToken(user: User) {
-    const payload = { id: user.id, email: user.email };
+    const payload: JWTPayload = {
+      id: user.id,
+      email: user.email,
+      role: user.role,
+    };
     return this.jwtService.signAsync(payload);
   }
 }

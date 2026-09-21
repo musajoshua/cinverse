@@ -6,11 +6,12 @@ import Joi from 'joi';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
-import { APP_INTERCEPTOR } from '@nestjs/core';
+import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { MoviesModule } from './movies/movies.module';
 import { GenresModule } from './genres/genres.module';
 import { ActorsModule } from './actors/actors.module';
 import { ReviewsModule } from './reviews/reviews.module';
+import { AuthNGuard } from './common/guards/authn/authn.guard';
 
 @Module({
   imports: [
@@ -42,6 +43,10 @@ import { ReviewsModule } from './reviews/reviews.module';
   controllers: [AppController],
   providers: [
     AppService,
+    {
+      provide: APP_GUARD,
+      useClass: AuthNGuard,
+    },
     {
       provide: APP_INTERCEPTOR,
       useClass: ClassSerializerInterceptor,
