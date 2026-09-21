@@ -24,7 +24,9 @@ export class ReviewsService {
 
     const review = await this.reviewRepository.findOne({
       where: {
-        movie,
+        movie: {
+          id: movie.id,
+        },
         user: {
           id: userId,
         },
