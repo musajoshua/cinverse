@@ -18,6 +18,7 @@ import { ActorsModule } from './actors/actors.module';
 import { ReviewsModule } from './reviews/reviews.module';
 import { AuthNGuard } from './common/guards/authn/authn.guard';
 import { RoleGuard } from './common/guards/role/role.guard';
+import { ResponseTransformerInterceptor } from './common/interceptors/response-transformer/response-transformer.interceptor';
 import { RequestLoggerMiddleware } from './common/middlewares/request-logger/request-logger.middleware';
 
 @Module({
@@ -61,6 +62,10 @@ import { RequestLoggerMiddleware } from './common/middlewares/request-logger/req
     {
       provide: APP_INTERCEPTOR,
       useClass: ClassSerializerInterceptor,
+    },
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: ResponseTransformerInterceptor,
     },
   ],
 })
