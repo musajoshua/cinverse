@@ -12,6 +12,7 @@ import { GenresModule } from './genres/genres.module';
 import { ActorsModule } from './actors/actors.module';
 import { ReviewsModule } from './reviews/reviews.module';
 import { AuthNGuard } from './common/guards/authn/authn.guard';
+import { RoleGuard } from './common/guards/role/role.guard';
 
 @Module({
   imports: [
@@ -46,6 +47,10 @@ import { AuthNGuard } from './common/guards/authn/authn.guard';
     {
       provide: APP_GUARD,
       useClass: AuthNGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: RoleGuard,
     },
     {
       provide: APP_INTERCEPTOR,
